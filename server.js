@@ -1,9 +1,5 @@
 /*
- *  Copyright (C) DumbPosters - All Rights Reserved
- *  Unauthorized copying, distribution, sharing and editing/modifying of this file and other files in the folder of "SERVERFOLDER", 
- *  via any medium is strictly prohibited
- *  Proprietary and confidential
- *  Written by Adak Celina <celinaadak@gmail.com>, January 17th, 2021
+ * LICENSE: MIT
  */
 
 
@@ -15,7 +11,7 @@ const mongoose = require("mongoose");
 let path = require("path");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 80;
-const DBURI = "mongodb+srv://bosdos12:112211@postdata.oqmy2.mongodb.net/DumbPostersDB?retryWrites=true&w=majority"
+const DBURI = "your database link";
 // importing the schemas
 const User = require("./Schemas/User");
 const Post = require("./Schemas/Post");
@@ -26,31 +22,23 @@ const jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-// importing and using helmet for security
-const helmet = require("helmet");
-app.use(helmet())
-
-
+app.set("view engine", "ejs");
+app.set("Views", "View");
 
 // connecting to the database and if succesfull starting the host
 mongoose.connect(DBURI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(ConnectedToServerRES => {
-    app.listen(PORT, "192.168.42.232", () => {
+    app.listen(PORT, {youripv4}, () => {
         console.log(`[THE SERVER HAS STARTED RUNNING ON PORT: [${PORT}]]`);
     })
 }).catch(err => {
     console.log(err);
 })
 
-// setting my view engine
-app.set("view engine", "ejs");
-app.set("views", "views");
-
 // setting the homescreen of the server url (only page of the site btw)
 app.get("/", (req, res) => {
     res.render("index")
 })
-
 
 // ======================================================
 //   Users Related Stuff
@@ -65,9 +53,6 @@ app.get("/users", (req, res) => {
         console.log(err);
     })
 })
-
-
-
 
 /**
  *  Getting Single Users by username!
@@ -86,7 +71,6 @@ app.get("/singleuser/:username", (req, res) => {
     })
 })
 
-
 // getting single users by email
 // for checking if the email is already in use
 app.get("/singleusersBYEMAIL/:email", (req, res) => {
@@ -104,9 +88,6 @@ app.get("/singleusersBYEMAIL/:email", (req, res) => {
 })
 
 
-
-
-
 // ======================================================
 // ======================================================
 //   Posts Related Stuff
@@ -121,7 +102,6 @@ app.get("/posts", (req, res) => {
         console.log(err)
     })
 })
-
 
 /**
  *  GETTING SINGLE POSTS    
@@ -139,12 +119,6 @@ app.get("/singlepost/:title", (req, res) => {
         console.log(err)
     })
 })
-
-
-
-
-
-
 
 /**
  *    =========================
@@ -172,7 +146,6 @@ app.post("/users", jsonParser, (req, res) => {
     console.log("Account Created Succesfully")
 })
 
-
 /**
  *  - CREATING POSTS - 
  */
@@ -191,9 +164,6 @@ app.post("/posts", jsonParser, (req, res) => {
     res.json({"PostStatus": "Completed"})
     console.log(`Post Created Succesfully\n ${req.body.author}\n ${req.body.title}\n ${req.body.body}\n-------------------------------------------`)
 })
-
-
-
 
 /**
  *  THE PUT REQUEST FOR EDITING THE BIO
