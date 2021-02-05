@@ -1,7 +1,7 @@
 /**
  *  AUTHOR: Adak Celina
  *  author's github: [https://www.github.com/bosdoas12]
- * 
+ *  license: MIT
  */
 
 
@@ -26,10 +26,6 @@ const Stack = createStackNavigator();
 var CURUSER;
 var GLOBALSEARCHEDUSER;
 
-
-
-
-
 /**
  *  ===   LOGIN PAGE   ===
  */
@@ -46,8 +42,6 @@ const LoginPage = ({ navigation }) => {
     vp ? setVpTXT("Hide Password") : setVpTXT("View Password");
   }
 
-
-
   /**
    *  -- INPUT HANDLERS --
    */
@@ -63,7 +57,6 @@ const LoginPage = ({ navigation }) => {
     setPasswordET(pass_par)
   }
 
-
   /**
    *  -- REQUESTS -- 
    */
@@ -75,7 +68,7 @@ const LoginPage = ({ navigation }) => {
       if (passwordPar.length > 7) {
         // the password is at least 8 chars long so 
         // sending the query to the server
-        fetch(`http://192.168.42.232/singleuser/${usernamePar}`)
+        fetch(`http://youripv4/singleuser/${usernamePar}`)
         .then(FetchResponse => FetchResponse.json())
         .then(data => actualLoginFunctionPOSTREQ(...data, passwordPar))
         .catch(err => Alert.alert("Login Error:", `Username [${usernamePar}] doesn't exist.`))
@@ -268,8 +261,6 @@ const LoginPageStyles = StyleSheet.create({
   }
 });
 
-
-
 /**
  *  ===============================================================================================
  *  ===============================================================================================
@@ -280,7 +271,6 @@ const LoginPageStyles = StyleSheet.create({
  *  --- SIGNUP PAGE ---
  */
 const SignUpPage = ({ navigation }) => {
-
     /**
      * Creating the state call for displaying the TOS modal
      */
@@ -289,7 +279,6 @@ const SignUpPage = ({ navigation }) => {
         viewTOS ? setViewTOS(false) : setViewTOS(true);
         // console.log(viewTOS)
     }
-
 
     /**
      *  THE VIEW PASSWORDS OR NOT RELATED CODE  
@@ -309,9 +298,6 @@ const SignUpPage = ({ navigation }) => {
         setPasswordsVisibilityState(false);
       }
     }
-
-
-
 
     /**
      *  SIGNUP RELATED CODE 
@@ -338,7 +324,6 @@ const SignUpPage = ({ navigation }) => {
       setSignUpCONFPassword(CONFPasswordPar);
     }
 
-
     // signup function which will be called on signup button clicks
     const SignUpFunc = () => {
       // some general variables i will use in this function
@@ -350,7 +335,6 @@ const SignUpPage = ({ navigation }) => {
       let email = signUpEmail;
       let password = signUpPassword;
       let confPassword = signUpCONFPassword;
-
 
       // starting the signup validity checks!
       // first checking if a username is even entered
@@ -424,12 +408,10 @@ const SignUpPage = ({ navigation }) => {
       };
     };
 
-
-
     // the actual function which will do the post request
     const ACTUALSIGNUPFUNCTIONASCHTUNG = (username, email, password) => {
       // checking if the username already exists in the server as the first step
-      fetch(`http://192.168.42.232/singleuser/${username}`)
+      fetch(`http://youripv4/singleuser/${username}`)
       .then(FoundSingleUser => FoundSingleUser.json())
       .then(data => checkIfUsernameExists(data))
       .catch(err => console.log(err))
@@ -459,7 +441,7 @@ const SignUpPage = ({ navigation }) => {
       /**
        *  THIS IS THE EMAIL CHECKER FUNCTION
        *  THIS WHILL CHECK IF THE EMAIL ALREADY EXISTS
-       *  AND IF VALIITY CHECKS SUCCEED, THIS FUNCTION
+       *  AND IF VALIDITY CHECKS SUCCEED, THIS FUNCTION
        *  WILL ALSO CREATE THE ACCOUNT.
        */
       const checkIfEmailAlreadyExistsAndCreateAccount = (serverData) => {
@@ -472,7 +454,7 @@ const SignUpPage = ({ navigation }) => {
            *  SO WE CAN CREATE THE ACCOUNT NOW!
            */
           // creating the post request to the server
-          fetch(`http://192.168.42.232/users`, {
+          fetch(`http://youripv4/users`, {
             "method": "POST",
             "headers": {
               "Content-type": "application/json"
@@ -738,9 +720,6 @@ const UserPersonalPage = ({ navigation }) => {
    *   SOME DATA THAT WILL BE NEEDED IN THE WHOLE FUNCTION 
    */
 
-
-
-
   /**
    *  THE POSTS RELATEDD STUFF
    */
@@ -759,12 +738,10 @@ const UserPersonalPage = ({ navigation }) => {
   })
     
     // the fetch call which will get all the pots so we can filter them later
-  fetch("http://192.168.42.232/posts")
+  fetch("http://youripv4/posts")
   .then(res => res.json())
   .then(data => SetUserPostsArrayFunction(data))
   .catch(() => Alert.alert("Error", "There was an error displaying your posts"))
-
-
 
   /**
    *   ADD NEW POST MODAL RELATED STUFF
@@ -808,7 +785,6 @@ const UserPersonalPage = ({ navigation }) => {
       setBodyText(bodyTXT);
     }
   }
-
 
   // the cancel function
   const CancelNewModalFunc = () => {
@@ -909,7 +885,7 @@ const UserPersonalPage = ({ navigation }) => {
     // getting the name of the current user in a variable
     let currentUserUsername = CURUSER.username;
     // fetching the bio of the current user
-    fetch(`http://192.168.42.232/singleuser/${currentUserUsername}`)
+    fetch(`http://youripv4/singleuser/${currentUserUsername}`)
     .then(res => res.json())
     // setting the text of the textInput to the gotten data with the function
     // function is needed as without spreading the json data returns undefined (line: 906)
@@ -925,7 +901,6 @@ const UserPersonalPage = ({ navigation }) => {
   const CancelBioEditFunc = () => {
     // now removing the modal
     setViewEditBioM(false);
-
     // first clearing the states
     setCurUserBioState("");
   }
@@ -948,7 +923,7 @@ const UserPersonalPage = ({ navigation }) => {
     let newBio = curUserBioState;
     console.log(newBio)
     // creating the put request
-    fetch(`http://192.168.42.232/users`,{
+    fetch(`http://youripv4/users`,{
           "method": "PUT",
           "headers": {
             "Content-type": "application/json"
@@ -985,10 +960,6 @@ const UserPersonalPage = ({ navigation }) => {
       Alert.alert("Success", "Your bio has been updated succesfully!");
     }
   }
-
-
-
-
     
   return (
     <View style={UPPStyle.mainScreen}>
@@ -1014,8 +985,6 @@ const UserPersonalPage = ({ navigation }) => {
               </View>
               </TouchableOpacity>
 
-
-
               {/* THE MODAL OF EDIT BIO */}
               <Modal animationType="slide" transparent={true} visible={viewEditBioM}>
                 <View style={{ width:"100%",height:"100%",backgroundColor:"gray",borderColor:"black",borderWidth:2,alignItems:'center'}}>
@@ -1035,9 +1004,6 @@ const UserPersonalPage = ({ navigation }) => {
                 </View>
               </Modal>
 
-
-
-
             </View>
           </View>
           {/* ADD NEW POST BUTTON */}
@@ -1046,9 +1012,6 @@ const UserPersonalPage = ({ navigation }) => {
             <Text style={{color:"white",fontSize:20}}>POSTS:</Text>
             <View style={{width:"100%",borderColor:"white",borderTopWidth:3}}></View>
           </View>
-
-
-
 
           {/* ADD NEW POST MODAL */}
           <Modal animationType="fade" transparent={true} visible={ANPmodalVisibility}>
@@ -1072,9 +1035,6 @@ const UserPersonalPage = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </Modal>
-
-
-
 
           {/* THIS IS WHERE THE CODE WILL BE FOR RENERING ALL THE POSTS BY THE USER */}
           <View>
@@ -1215,8 +1175,6 @@ const UPPStyle = StyleSheet.create({
   }
 })
 
-
-
 /**
  *  ===============================================================================================
  *  ===============================================================================================
@@ -1235,7 +1193,7 @@ const ActualHomeScreen = ({ navigation }) => {
   let [postsArr, setPostsArr] = useState([]);
 
   // the fetch call which will get the posts data to render all posts
-  fetch("http://192.168.42.232/posts")
+  fetch("http://youripv4/posts")
   .then(res => res.json())
   .then(data => removeCurrentUsersPostsFromHPF(data))
   .catch(() => null)
@@ -1254,7 +1212,6 @@ const ActualHomeScreen = ({ navigation }) => {
       }
     }))
   }
-  
 
   return (
     <View style={AHS_Style.mainScreen}>
@@ -1339,8 +1296,6 @@ const AHS_Style = StyleSheet.create({
   }
 })
 
-
-
 /**
  *  ===============================================================================================
  *  ===============================================================================================
@@ -1359,13 +1314,11 @@ const SearchedUserPage = ({ navigation }) => {
   // setting it as false by default
   let [viewModal, setViewModal] = useState(false)
   
-
   /**
    *  VIEWING THE SEARCHED USERS USN AND BIO
    */
   let [SUPUSN, setSUPUSN] = useState("");
   let [SUPBIO, setSUPBIO] = useState("");
-  
   
   /**
    *  USER SEARCHING RELATED CODE (TO BE USED IN OTHER PAGES TOO!)
@@ -1403,11 +1356,9 @@ const SearchedUserPage = ({ navigation }) => {
     GLOBALSEARCHEDUSER = searchedUserData;
     // console.log(GLOBALSEARCHEDUSER.username);
 
-    
     // setting the user usn and bio directly
     setSUPUSN(GLOBALSEARCHEDUSER.username);
     setSUPBIO(GLOBALSEARCHEDUSER.bio);
-
 
     // opening the modal
     setViewModal(true);
@@ -1415,8 +1366,6 @@ const SearchedUserPage = ({ navigation }) => {
     // clearing the text entry
     setUserSearchText("")
   }
-
-
 
   /**
    *  VIEWING THE USERS POSTS RELATED CODE
@@ -1444,8 +1393,6 @@ const SearchedUserPage = ({ navigation }) => {
   .then(data => FilterPostsAndSearchedUserOnlyFunc(data))
   .catch(() => null)
 
-
-
   return (
     <View style={SearchUP_Styles.mainScreen}>
       {/* THE USER SEARCH BAR AND ITS VIEW */}
@@ -1453,9 +1400,6 @@ const SearchedUserPage = ({ navigation }) => {
         <TextInput value={userSearchText} onChangeText={userSearchTXTinputHandler} placeholder="Search Users" style={UPPStyle.UserSearchBar} title="Search Users"/>
         <Button onPress={() => SearchUser()} title="Search"/>
       </View>
-
-
-
 
       {/* THE SEARCHED USER MODAL WILL BE HERE */}
       <Modal animationType="slide" visible={viewModal}>
@@ -1537,7 +1481,6 @@ const SearchedUserPage = ({ navigation }) => {
         </View>
       </Modal>
 
-
       {/* THE FOOTER OF THE APP */}
       {/* TO BE COPIES TO THE OTHER PAGES TOO */}
       <View style={{
@@ -1588,8 +1531,6 @@ const SearchUP_Styles = StyleSheet.create({
   }
 })
 
-
-
 /**
  *  ===============================================================================================
  *  ===============================================================================================
@@ -1613,8 +1554,3 @@ export default function App() {
     </NavigationContainer>
   )
 }
-
-
-
- 
- 
